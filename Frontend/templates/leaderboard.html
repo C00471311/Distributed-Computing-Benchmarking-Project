@@ -489,33 +489,27 @@ body { min-height: 100vh; }
 </style>
 </head>
 <body>
-<!-- ═══════════════════════════════════════════════ -->
 <div class="page" id="page-leaderboard">
   <div class="page-header">
-    <div class="brand">BENCH<span>MARK</span> HUB</div>
+    <a href="{% url 'dashboard' %}" class="brand" style="text-decoration:none; color:inherit;">BENCH<span>MARK</span> HUB</a>
     <nav>
-      <a href="#">Dashboard</a>
-      <a href="#" class="active">Leaderboard</a>
-      <a href="#">Submit Score</a>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{% url 'leaderboard' %}" class="active">Leaderboard</a>
+      <a href="{% url 'submit_score' %}">Submit Score</a>
     </nav>
     <div class="header-actions">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="avatar-placeholder" style="width:32px;height:32px;font-size:13px;">JL</div>
-        <span style="font-size:13px;font-weight:600;">Justin L.</span>
-      </div>
+      <a href="{% url 'login' %}" class="btn btn-sm btn-ghost">Login</a>
     </div>
   </div>
 
   <div class="content-wrap">
-    <div class="wf-label">WIREFRAME — PAGE 2 OF 7: LEADERBOARD</div>
-
     <!-- Page Title Row -->
     <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-top:20px; margin-bottom:20px;">
       <div>
         <h1 style="font-size:26px; font-weight:700; font-family:'Courier Prime',monospace;">Global Leaderboard</h1>
-        <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">12,441 validated submissions · Updated every 10 min</p>
+        <p style="color:var(--text-muted); font-size:14px; margin-top:4px;">Placeholder layout — connect to data later.</p>
       </div>
-      <button class="btn btn-primary">+ Submit My Score</button>
+      <a href="{% url 'submit_score' %}" class="btn btn-primary" style="text-decoration:none;">+ Submit score</a>
     </div>
 
     <!-- FILTER ROW -->
@@ -539,13 +533,9 @@ body { min-height: 100vh; }
           <select><option>Highest Score</option><option>Lowest Score</option><option>Near My Score</option></select>
         </div>
         <div style="display:flex;gap:8px;align-items:flex-end;margin-top:18px;">
-          <button class="btn btn-primary btn-sm">Apply</button>
-          <button class="btn btn-ghost btn-sm">Clear</button>
+          <button type="button" class="btn btn-primary btn-sm">Apply</button>
+          <button type="button" class="btn btn-ghost btn-sm">Clear</button>
         </div>
-      </div>
-      <div class="annotation-block" style="margin-top:10px;">
-        Filter combinations: CPU + GPU + Benchmark + Sort. "Near My Score" pulls ±10% of logged-in user's composite score.<br>
-        Filters update URL params → shareable filtered links.
       </div>
     </div>
 
@@ -565,86 +555,21 @@ body { min-height: 100vh; }
           <tr>
             <th style="width:60px;">#</th>
             <th>User</th>
-            <th>CPU</th>
-            <th>GPU</th>
-            <th>Cinebench</th>
-            <th>3DMark</th>
-            <th>PCMark</th>
             <th>Composite ↓</th>
-            <th></th>
+            <th>Submitted</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="rank top">1</td>
-            <td><div style="display:flex;gap:10px;align-items:center;"><div class="avatar-placeholder" style="width:28px;height:28px;font-size:11px;">OC</div><div><div style="font-weight:600;font-size:13px;">overclocker99</div><span class="badge badge-approved" style="margin-top:2px;">Verified</span></div></div></td>
-            <td style="font-size:13px; color:var(--text-muted);">i9-13900KS</td>
-            <td style="font-size:13px; color:var(--text-muted);">RTX 4090</td>
-            <td class="score-val">41,200</td>
-            <td class="score-val">22,890</td>
-            <td class="score-val">9,870</td>
-            <td class="score-val" style="color:var(--blueprint);">98,240</td>
-            <td><button class="btn btn-ghost btn-sm">View →</button></td>
-          </tr>
-          <tr>
-            <td class="rank top">2</td>
-            <td><div style="display:flex;gap:10px;align-items:center;"><div class="avatar-placeholder" style="width:28px;height:28px;font-size:11px;">KS</div><div><div style="font-weight:600;font-size:13px;">ky_smith</div></div></div></td>
-            <td style="font-size:13px; color:var(--text-muted);">Ryzen 9 7950X</td>
-            <td style="font-size:13px; color:var(--text-muted);">RTX 4090</td>
-            <td class="score-val">39,100</td>
-            <td class="score-val">21,500</td>
-            <td class="score-val">9,410</td>
-            <td class="score-val" style="color:var(--blueprint);">93,780</td>
-            <td><button class="btn btn-ghost btn-sm">View →</button></td>
-          </tr>
-          <tr style="background:var(--blueprint-light);">
-            <td class="rank">48</td>
-            <td><div style="display:flex;gap:10px;align-items:center;"><div class="avatar-placeholder" style="width:28px;height:28px;font-size:11px;border-color:var(--blueprint);color:var(--blueprint);">JL</div><div><div style="font-weight:600;font-size:13px;">Justin L. <span style="font-size:11px;color:var(--blueprint);font-family:'Courier Prime',monospace;">(YOU)</span></div></div></div></td>
-            <td style="font-size:13px; color:var(--text-muted);">i7-12700K</td>
-            <td style="font-size:13px; color:var(--text-muted);">RTX 3080</td>
-            <td class="score-val">28,400</td>
-            <td class="score-val">17,200</td>
-            <td class="score-val">8,100</td>
-            <td class="score-val">68,430</td>
-            <td><button class="btn btn-ghost btn-sm">View →</button></td>
-          </tr>
-          <tr>
-            <td class="rank">49</td>
-            <td><div style="display:flex;gap:10px;align-items:center;"><div class="avatar-placeholder" style="width:28px;height:28px;font-size:11px;">GT</div><div><div style="font-weight:600;font-size:13px;">g_thibodeaux</div></div></div></td>
-            <td style="font-size:13px; color:var(--text-muted);">Ryzen 7 5800X3D</td>
-            <td style="font-size:13px; color:var(--text-muted);">RX 6800 XT</td>
-            <td class="score-val">24,900</td>
-            <td class="score-val">16,800</td>
-            <td class="score-val">7,980</td>
-            <td class="score-val">66,100</td>
-            <td><button class="btn btn-ghost btn-sm">View →</button></td>
-          </tr>
-          <tr>
-            <td class="rank">50</td>
-            <td><div style="display:flex;gap:10px;align-items:center;"><div class="avatar-placeholder" style="width:28px;height:28px;font-size:11px;">AS</div><div><div style="font-weight:600;font-size:13px;">akriti_s</div></div></div></td>
-            <td style="font-size:13px; color:var(--text-muted);">i5-12600K</td>
-            <td style="font-size:13px; color:var(--text-muted);">RTX 3070 Ti</td>
-            <td class="score-val">21,300</td>
-            <td class="score-val">15,400</td>
-            <td class="score-val">7,600</td>
-            <td class="score-val">60,900</td>
-            <td><button class="btn btn-ghost btn-sm">View →</button></td>
+            <td colspan="4" style="padding:32px; text-align:center; color:var(--text-muted);">No data yet. Use <a href="{% url 'submit_score' %}" style="color:var(--blueprint);">Submit score</a> from the dashboard flow (UI only).</td>
           </tr>
         </tbody>
       </table>
       <div style="padding:16px 20px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border);">
-        <span style="font-size:13px; color:var(--text-muted); font-family:'Courier Prime',monospace;">Showing 1–50 of 12,441</span>
-        <div style="display:flex;gap:8px;">
-          <button class="btn btn-sm">← Prev</button>
-          <button class="btn btn-sm">Next →</button>
-        </div>
+        <span style="font-size:13px; color:var(--text-muted); font-family:'Courier Prime',monospace;">0 scores</span>
       </div>
     </div>
-    <div class="annotation-block" style="margin-top:12px;">
-      Highlighted row (blue) = currently logged-in user's entry.<br>
-      "Composite" column = weighted average of all 5 benchmark scores via algorithm (doc calls for set math formula).<br>
-      Click any row → goes to Score Detail page (page 7). Click "View →" button same behavior.
-    </div>
   </div>
+</div>
 </body>
 </html>

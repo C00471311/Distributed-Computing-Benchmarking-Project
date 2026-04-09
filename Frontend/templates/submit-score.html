@@ -489,26 +489,20 @@ body { min-height: 100vh; }
 </style>
 </head>
 <body>
-<!-- ═══════════════════════════════════════════════ -->
 <div class="page" id="page-submit">
   <div class="page-header">
-    <div class="brand">BENCH<span>MARK</span> HUB</div>
+    <a href="{% url 'dashboard' %}" class="brand" style="text-decoration:none; color:inherit;">BENCH<span>MARK</span> HUB</a>
     <nav>
-      <a href="#">Dashboard</a>
-      <a href="#">Leaderboard</a>
-      <a href="#" class="active">Submit Score</a>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{% url 'leaderboard' %}">Leaderboard</a>
+      <a href="{% url 'submit_score' %}" class="active">Submit Score</a>
     </nav>
     <div class="header-actions">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="avatar-placeholder" style="width:32px;height:32px;font-size:13px;">JL</div>
-        <span style="font-size:13px;font-weight:600;">Justin L.</span>
-      </div>
+      <a href="{% url 'login' %}" class="btn btn-sm btn-ghost">Login</a>
     </div>
   </div>
 
   <div class="content-wrap">
-    <div class="wf-label">WIREFRAME — PAGE 3 OF 7: SUBMIT SCORE</div>
-
     <!-- Step Indicator -->
     <div class="steps" style="margin-top:20px;">
       <div class="step done">
@@ -527,17 +521,12 @@ body { min-height: 100vh; }
       </div>
     </div>
 
-    <div class="annotation-block" style="margin-bottom:24px;">
-      3-step form wizard. Step 1 = system specs (CPU, GPU, RAM, cooling). Step 2 = score entry (this view). Step 3 = confirmation preview before submitting to admin queue.
-    </div>
-
     <div style="display:grid; grid-template-columns:1fr 320px; gap:24px;">
-
       <!-- LEFT: Score Entry -->
       <div>
         <div class="card" style="margin-bottom:16px;">
-          <div class="card-title">Step 2 — Enter Benchmark Scores</div>
-          <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Enter scores for any benchmarks you've run. At least 1 required.</p>
+          <div class="card-title">Enter Benchmark Scores</div>
+          <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Enter scores for benchmarks you’ve run (UI only — nothing is saved yet).</p>
 
           <div class="benchmark-input-grid">
             <!-- Benchmark 1 -->
@@ -551,7 +540,6 @@ body { min-height: 100vh; }
                 <label>Single-Core Score</label>
                 <input type="number" placeholder="e.g. 1950">
               </div>
-              <div class="wf-annotation">CPU benchmark — scores in pts</div>
             </div>
 
             <!-- Benchmark 2 -->
@@ -565,7 +553,6 @@ body { min-height: 100vh; }
                 <label>Graphics Score</label>
                 <input type="number" placeholder="e.g. 18900">
               </div>
-              <div class="wf-annotation">GPU benchmark — scores in pts</div>
             </div>
 
             <!-- Benchmark 3 -->
@@ -575,7 +562,6 @@ body { min-height: 100vh; }
                 <label>Overall Score</label>
                 <input type="number" placeholder="e.g. 8100">
               </div>
-              <div class="wf-annotation">System benchmark (CPU+GPU+SSD)</div>
             </div>
 
             <!-- Benchmark 4 -->
@@ -585,7 +571,6 @@ body { min-height: 100vh; }
                 <label>Render Time (seconds)</label>
                 <input type="number" placeholder="e.g. 245">
               </div>
-              <div class="wf-annotation">Lower = better. Algorithm inverts this score.</div>
             </div>
 
             <!-- Benchmark 5 -->
@@ -605,7 +590,6 @@ body { min-height: 100vh; }
                   <select><option>Ultra</option><option>Extreme</option><option>High</option></select>
                 </div>
               </div>
-              <div class="wf-annotation">GPU stress test. Preset must be "Ultra" for leaderboard eligibility.</div>
             </div>
           </div>
         </div>
@@ -614,24 +598,21 @@ body { min-height: 100vh; }
         <div class="card">
           <div class="card-title">Optional — Submission Notes</div>
           <div class="form-field">
-            <label>How did you achieve this score? (Optional)</label>
-            <textarea rows="3" placeholder="e.g. Liquid cooling with 5.2GHz all-core OC on P-cores. XMP enabled. Card at +100MHz core, +500MHz memory..."></textarea>
+            <label for="id_notes">How did you achieve this score? (Optional)</label>
+            <textarea id="id_notes" rows="3" maxlength="500" placeholder="e.g. Liquid cooling, XMP enabled, GPU OC..."></textarea>
           </div>
-          <div class="annotation-block" style="margin-top:10px;">This becomes the public comment visible on the Score Detail page. Max 500 chars.</div>
         </div>
       </div>
 
-      <!-- RIGHT: Live Score Preview -->
+      <!-- RIGHT: Composite + submit -->
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div class="total-score-display">
-          <div class="label">Estimated Composite Score</div>
-          <div class="value">68,430</div>
-          <div class="sub">Updates as you type</div>
-        </div>
-        <div class="annotation-block">
-          Algorithm preview: <br>
-          (CB × W1) + (3DM × W2) + (PCM × W3) + (BLD × W4) + (HVN × W5)<br><br>
-          Weights W1–W5 defined by team (Gregory/Ky). Blender score is inverted.
+          <div class="label">Composite score (preview)</div>
+          <div class="form-field" style="align-items:center;">
+            <label for="id_composite_score" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Composite</label>
+            <input id="id_composite_score" type="number" placeholder="e.g. 68430" style="max-width:220px; text-align:center; font-family:'Courier Prime',monospace; font-size:28px; font-weight:700; padding:12px;">
+          </div>
+          <div class="sub">For display only until backend wiring is added.</div>
         </div>
 
         <div class="card">
@@ -671,11 +652,12 @@ body { min-height: 100vh; }
         </div>
 
         <div style="display:flex;flex-direction:column;gap:8px;">
-          <button class="btn btn-primary" style="padding:12px;">Continue to Review →</button>
-          <button class="btn btn-ghost" style="padding:12px;">← Back to System Specs</button>
+          <a href="{% url 'leaderboard' %}" class="btn btn-primary" style="padding:12px; text-align:center; text-decoration:none;">Next: Leaderboard →</a>
+          <a href="{% url 'dashboard' %}" class="btn btn-ghost" style="padding:12px; text-align:center; text-decoration:none;">← Back to dashboard</a>
         </div>
       </div>
     </div>
   </div>
+</div>
 </body>
 </html>
