@@ -13,7 +13,7 @@
   <?php render_header('submit-score'); ?>
 
   <div class="content-wrap">
-    <div class="steps" style="margin-top:20px;">
+    <!-- <div class="steps" style="margin-top:20px;">
       <div class="step done">
         <div class="step-num">✓</div>
         <span>System Specs</span>
@@ -28,7 +28,7 @@
         <div class="step-num">3</div>
         <span>Review &amp; Submit</span>
       </div>
-    </div>
+    </div> -->
 
     <form method="post" action="save-submission.php">
       <div style="display:grid; grid-template-columns:1fr 320px; gap:24px;">
@@ -39,64 +39,42 @@
 
             <div class="benchmark-input-grid">
               <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>Cinebench R23</div>
+                <div class="bname"><span class="dot"></span>Basemark</div>
                 <div class="form-field">
-                  <label for="cinebench_multi">Multi-Core Score</label>
-                  <input id="cinebench_multi" name="cinebench_multi" type="number" placeholder="e.g. 28400">
-                </div>
-                <div class="form-field" style="margin-top:10px;">
-                  <label for="cinebench_single">Single-Core Score</label>
-                  <input id="cinebench_single" name="cinebench_single" type="number" placeholder="e.g. 1950">
+                  <label for="score_basemark">Overall Score</label>
+                  <input id="score_basemark" name="basemark" type="number" placeholder="e.g. 8000" class="score-input" data-target="basemark">
                 </div>
               </div>
 
               <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>3DMark (TimeSpy)</div>
+                <div class="bname"><span class="dot"></span>3DMark</div>
                 <div class="form-field">
-                  <label for="timespy_overall">Overall Score</label>
-                  <input id="timespy_overall" name="timespy_overall" type="number" placeholder="e.g. 17200">
-                </div>
-                <div class="form-field" style="margin-top:10px;">
-                  <label for="timespy_graphics">Graphics Score</label>
-                  <input id="timespy_graphics" name="timespy_graphics" type="number" placeholder="e.g. 18900">
+                  <label for="score_3dmark">Overall Score</label>
+                  <input id="score_3dmark" name="3dmark" type="number" placeholder="e.g. 12000" class="score-input" data-target="3dmark">
                 </div>
               </div>
 
               <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>PCMark 10</div>
+                <div class="bname"><span class="dot"></span>Novabench</div>
                 <div class="form-field">
-                  <label for="pcmark10_overall">Overall Score</label>
-                  <input id="pcmark10_overall" name="pcmark10_overall" type="number" placeholder="e.g. 8100">
+                  <label for="score_novabench">Overall Score</label>
+                  <input id="score_novabench" name="novabench" type="number" placeholder="e.g. 4000" class="score-input" data-target="novabench">
                 </div>
               </div>
 
               <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>Blender (BMW Scene)</div>
+                <div class="bname"><span class="dot"></span>BAPco SYSmark</div>
                 <div class="form-field">
-                  <label for="blender_render_time">Render Time (seconds)</label>
-                  <input id="blender_render_time" name="blender_render_time" type="number" placeholder="e.g. 245">
+                  <label for="score_sysmark">Overall Score</label>
+                  <input id="score_sysmark" name="sysmark" type="number" placeholder="e.g. 2500" class="score-input" data-target="sysmark">
                 </div>
               </div>
 
-              <div class="benchmark-card" style="grid-column:1/-1;">
-                <div class="bname"><span class="dot"></span>Heaven Benchmark 4.0</div>
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr; gap:12px;">
-                  <div class="form-field">
-                    <label for="heaven_score">Score</label>
-                    <input id="heaven_score" name="heaven_score" type="number" placeholder="e.g. 3240">
-                  </div>
-                  <div class="form-field">
-                    <label for="heaven_fps_avg">FPS (avg)</label>
-                    <input id="heaven_fps_avg" name="heaven_fps_avg" type="number" placeholder="e.g. 128">
-                  </div>
-                  <div class="form-field">
-                    <label for="heaven_preset">Preset Used</label>
-                    <select id="heaven_preset" name="heaven_preset">
-                      <option>Ultra</option>
-                      <option>Extreme</option>
-                      <option>High</option>
-                    </select>
-                  </div>
+              <div class="benchmark-card">
+                <div class="bname"><span class="dot"></span>Passmark</div>
+                <div class="form-field">
+                  <label for="score_passmark">Overall Score</label>
+                  <input id="score_passmark" name="passmark" type="number" placeholder="e.g. 9000" class="score-input" data-target="passmark">
                 </div>
               </div>
             </div>
@@ -126,33 +104,33 @@
             <div style="display:flex;flex-direction:column;gap:12px;">
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>Cinebench R23</span><span class="score-val" style="font-size:13px;">0</span>
+                  <span>Basemark</span><span class="score-val" id="val-basemark" style="font-size:13px;">0</span>
                 </div>
-                <div class="score-bar-track"><div class="score-bar-fill" style="width:72%"></div></div>
+                <div class="score-bar-track"><div class="score-bar-fill" id="bar-basemark" style="width:0%"></div></div>
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>3DMark</span><span class="score-val" style="font-size:13px;">0</span>
+                  <span>3DMark</span><span class="score-val" id="val-3dmark" style="font-size:13px;">0</span>
                 </div>
-                <div class="score-bar-track"><div class="score-bar-fill" style="width:60%"></div></div>
+                <div class="score-bar-track"><div class="score-bar-fill" id="bar-3dmark" style="width:0%"></div></div>
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>PCMark 10</span><span class="score-val" style="font-size:13px;">0</span>
+                  <span>Novabench</span><span class="score-val" id="val-novabench" style="font-size:13px;">0</span>
                 </div>
-                <div class="score-bar-track"><div class="score-bar-fill" style="width:55%"></div></div>
+                <div class="score-bar-track"><div class="score-bar-fill" id="bar-novabench" style="width:0%"></div></div>
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>Blender</span><span class="score-val" style="font-size:13px;">0</span>
+                  <span>SYSmark</span><span class="score-val" id="val-sysmark" style="font-size:13px;">0</span>
                 </div>
-                <div class="score-bar-track"><div class="score-bar-fill" style="width:48%"></div></div>
+                <div class="score-bar-track"><div class="score-bar-fill" id="bar-sysmark" style="width:0%"></div></div>
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>Heaven</span><span class="score-val" style="font-size:13px;">0</span>
+                  <span>Passmark</span><span class="score-val" id="val-passmark" style="font-size:13px;">0</span>
                 </div>
-                <div class="score-bar-track"><div class="score-bar-fill" style="width:65%"></div></div>
+                <div class="score-bar-track"><div class="score-bar-fill" id="bar-passmark" style="width:0%"></div></div>
               </div>
             </div>
           </div>
@@ -170,5 +148,24 @@
     </form>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const inputs = document.querySelectorAll('.score-input');
+  // Arbitrary max value for the progress bar visualization
+  const MAX_VAL = 15000;
+
+  inputs.forEach(input => {
+    input.addEventListener('input', (e) => {
+      const target = e.target.dataset.target;
+      const val = parseInt(e.target.value) || 0;
+      
+      document.getElementById(`val-${target}`).textContent = val.toLocaleString();
+      const percent = Math.min(Math.max((val / MAX_VAL) * 100, 0), 100);
+      document.getElementById(`bar-${target}`).style.width = percent + '%';
+    });
+  });
+});
+</script>
 </body>
 </html>

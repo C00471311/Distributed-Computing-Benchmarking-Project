@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div style="margin-top:48px; display:flex; gap:40px;">
+      <!-- <div style="margin-top:48px; display:flex; gap:40px;">
         <div>
           <div class="stat-big" style="color:white;">0</div>
           <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px; font-family:'Courier Prime',monospace; text-transform:uppercase; letter-spacing:0.06em;">Submissions</div>
@@ -57,7 +57,7 @@
           <div class="stat-big" style="color:white;">0</div>
           <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px; font-family:'Courier Prime',monospace; text-transform:uppercase; letter-spacing:0.06em;">Users</div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <!-- RIGHT: Auth Form -->
@@ -69,16 +69,15 @@
 
       <form id="panel-signin" class="auth-panel is-visible" role="tabpanel" aria-labelledby="tab-signin" method="post" action="authenticate.php">
         <h2 style="font-size:18px; font-weight:700; margin-bottom:4px;">Sign in</h2>
-        <p style="font-size:13px; color:var(--text-muted); margin-bottom:4px;">Prototype: no authentication yet. Continue to the dashboard to explore the flow.</p>
 
         <div class="form-field">
           <label for="id_username">Username</label>
-          <input id="id_username" name="username" type="text" autocomplete="username" placeholder="optional" class="placeholder-val">
+          <input id="id_username" name="username" type="text" autocomplete="username" placeholder="Username" class="placeholder-val">
         </div>
 
         <div class="form-field">
           <label for="id_password">Password</label>
-          <input id="id_password" name="password" type="password" autocomplete="current-password" placeholder="••••••••">
+          <input id="id_password" name="password" type="password" autocomplete="current-password" placeholder="Password">
         </div>
 
         <button type="submit" class="btn btn-primary" style="width:100%; padding:13px; font-size:15px; margin-top:4px; text-align:center; text-decoration:none; box-sizing:border-box;">Continue to dashboard →</button>
@@ -86,7 +85,6 @@
 
       <form id="panel-signup" class="auth-panel" role="tabpanel" aria-labelledby="tab-signup" hidden method="post" action="register.php">
         <h2 style="font-size:18px; font-weight:700; margin-bottom:4px;">Create account</h2>
-        <p style="font-size:13px; color:var(--text-muted); margin-bottom:4px;">UI only for now — backend registration can plug in later.</p>
 
         <div class="form-field">
           <label for="id_email">Email</label>
@@ -95,17 +93,17 @@
 
         <div class="form-field">
           <label for="id_signup_username">Username</label>
-          <input id="id_signup_username" name="username" type="text" autocomplete="username" placeholder="choose a username" class="placeholder-val">
+          <input id="id_signup_username" name="username" type="text" autocomplete="Username" placeholder="Username" class="placeholder-val">
         </div>
 
         <div class="form-field">
           <label for="id_signup_password">Password</label>
-          <input id="id_signup_password" name="password" type="password" autocomplete="new-password" placeholder="••••••••">
+          <input id="id_signup_password" name="password" type="password" autocomplete="new-password" placeholder="Password">
         </div>
 
         <div class="form-field">
           <label for="id_signup_password2">Confirm password</label>
-          <input id="id_signup_password2" name="password_confirm" type="password" autocomplete="new-password" placeholder="••••••••">
+          <input id="id_signup_password2" name="password_confirm" type="password" autocomplete="new-password" placeholder="Confirm password">
         </div>
 
         <button type="submit" class="btn btn-primary" style="width:100%; padding:13px; font-size:15px; margin-top:4px; text-align:center; text-decoration:none; box-sizing:border-box;">Create account &amp; continue →</button>

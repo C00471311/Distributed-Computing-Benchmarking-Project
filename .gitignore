@@ -9,3 +9,5 @@ env/
 media/
 staticfiles/
 .gitignore
+.DS_Store
+Frontend/.DS_Store

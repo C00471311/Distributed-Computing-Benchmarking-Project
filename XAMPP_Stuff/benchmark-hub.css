@@ -149,6 +149,12 @@ body {
   color: var(--text);
   outline: none;
 }
+.form-field select {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 14px;
+}
 .form-field input:focus, .form-field select:focus { border-color: var(--blueprint); }
 .form-field .placeholder-val { color: var(--text-muted); font-style: italic; }
 
