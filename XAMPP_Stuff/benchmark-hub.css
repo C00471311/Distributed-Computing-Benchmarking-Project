@@ -268,7 +268,7 @@ tbody td.score-val {
 
 /* HERO / SPLASH */
 .auth-page {
-  min-height: calc(100vh - 49px);
+  min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
