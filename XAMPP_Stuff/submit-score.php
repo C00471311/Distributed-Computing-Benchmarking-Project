@@ -136,9 +136,9 @@
           </div>
 
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <button type="submit" class="btn btn-primary" style="padding:12px; text-align:center;">
+            <a href="leaderboard.php"  class="btn btn-primary" style="padding:12px; text-align:center; text-decoration:none; text-align:center;">
               Next: Leaderboard →
-            </button>
+            </a>
             <a href="dashboard.php" class="btn btn-ghost" style="padding:12px; text-align:center; text-decoration:none;">
               ← Back to dashboard
             </a>
