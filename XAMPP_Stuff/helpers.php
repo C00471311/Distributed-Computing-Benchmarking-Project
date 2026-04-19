@@ -118,4 +118,64 @@ if (!function_exists('render_header')) {
         <?php
     }
 }
+
+if (!function_exists('bench_hardware_cpus')) {
+    /**
+     * Common CPUs for filters and submit-score datalist suggestions.
+     * Submit form also allows free text for models not listed here.
+     */
+    function bench_hardware_cpus(): array {
+        return [
+            'AMD Ryzen 5 5600X',
+            'AMD Ryzen 5 7600',
+            'AMD Ryzen 7 5800X3D',
+            'AMD Ryzen 7 7800X3D',
+            'AMD Ryzen 7 9700X',
+            'AMD Ryzen 9 7950X',
+            'AMD Ryzen 9 9900X',
+            'Intel Core i5-12400F',
+            'Intel Core i5-13600K',
+            'Intel Core i5-14600K',
+            'Intel Core i7-13700K',
+            'Intel Core i9-13900K',
+            'Intel Core i9-14900K',
+            'Intel Core Ultra 7 265K',
+        ];
+    }
+}
+
+if (!function_exists('bench_hardware_gpus')) {
+    /**
+     * Common GPUs for filters and submit-score datalist suggestions.
+     * Submit form also allows free text for models not listed here.
+     */
+    function bench_hardware_gpus(): array {
+        return [
+            'AMD Radeon RX 6700 XT',
+            'AMD Radeon RX 7800 XT',
+            'AMD Radeon RX 7900 XT',
+            'AMD Radeon RX 7900 XTX',
+            'NVIDIA GeForce RTX 3060',
+            'NVIDIA GeForce RTX 4060',
+            'NVIDIA GeForce RTX 4060 Ti',
+            'NVIDIA GeForce RTX 4070',
+            'NVIDIA GeForce RTX 4070 Super',
+            'NVIDIA GeForce RTX 4080',
+            'NVIDIA GeForce RTX 4080 Super',
+            'NVIDIA GeForce RTX 4090',
+        ];
+    }
+}
+
+if (!function_exists('bench_leaderboard_cpu_filter_options')) {
+    function bench_leaderboard_cpu_filter_options(): array {
+        return array_merge(['Any CPU'], bench_hardware_cpus());
+    }
+}
+
+if (!function_exists('bench_leaderboard_gpu_filter_options')) {
+    function bench_leaderboard_gpu_filter_options(): array {
+        return array_merge(['Any GPU'], bench_hardware_gpus());
+    }
+}
 ?>

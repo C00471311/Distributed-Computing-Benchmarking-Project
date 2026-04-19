@@ -1,4 +1,8 @@
-<?php require_once __DIR__ . '/helpers.php'; ?>
+<?php
+require_once __DIR__ . '/helpers.php';
+$submitCpus = bench_hardware_cpus();
+$submitGpus = bench_hardware_gpus();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,8 +38,33 @@
       <div style="display:grid; grid-template-columns:1fr 320px; gap:24px;">
         <div>
           <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">System specifications</div>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Choose a suggestion or type your exact model (as shown in Basemark, 3DMark, Novabench, etc.).</p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+              <div class="form-field">
+                <label for="submit_cpu">CPU</label>
+                <input type="text" id="submit_cpu" name="cpu" list="cpu_suggestions" required autocomplete="off" maxlength="160" placeholder="e.g. Intel Core i7-13700K">
+                <datalist id="cpu_suggestions">
+                  <?php foreach ($submitCpus as $cpu): ?>
+                    <option value="<?= e($cpu) ?>"></option>
+                  <?php endforeach; ?>
+                </datalist>
+              </div>
+              <div class="form-field">
+                <label for="submit_gpu">GPU</label>
+                <input type="text" id="submit_gpu" name="gpu" list="gpu_suggestions" required autocomplete="off" maxlength="160" placeholder="e.g. NVIDIA GeForce RTX 4070">
+                <datalist id="gpu_suggestions">
+                  <?php foreach ($submitGpus as $gpu): ?>
+                    <option value="<?= e($gpu) ?>"></option>
+                  <?php endforeach; ?>
+                </datalist>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px;">
             <div class="card-title">Enter Benchmark Scores</div>
-            <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Enter scores for benchmarks you’ve run (UI only — nothing is saved yet).</p>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Enter scores for benchmarks you’ve run.</p>
 
             <div class="benchmark-input-grid">
               <div class="benchmark-card">
@@ -136,8 +165,11 @@
           </div>
 
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <a href="leaderboard.php"  class="btn btn-primary" style="padding:12px; text-align:center; text-decoration:none; text-align:center;">
-              Next: Leaderboard →
+            <button type="submit" class="btn btn-primary" style="padding:12px; width:100%; cursor:pointer; border:none; font:inherit;">
+              Submit score
+            </button>
+            <a href="leaderboard.php" class="btn btn-ghost" style="padding:12px; text-align:center; text-decoration:none;">
+              View leaderboard
             </a>
             <a href="dashboard.php" class="btn btn-ghost" style="padding:12px; text-align:center; text-decoration:none;">
               ← Back to dashboard

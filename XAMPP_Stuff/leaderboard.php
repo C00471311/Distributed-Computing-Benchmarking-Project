@@ -2,8 +2,8 @@
 $leaderboardRows = $leaderboardRows ?? [];
 $filters = $filters ?? [];
 $benchmarks = $benchmarks ?? ['All Benchmarks','Cinebench R23','3DMark','PCMark 10','Blender','Heaven'];
-$cpus = $cpus ?? ['Any CPU'];
-$gpus = $gpus ?? ['Any GPU'];
+$cpus = $cpus ?? bench_leaderboard_cpu_filter_options();
+$gpus = $gpus ?? bench_leaderboard_gpu_filter_options();
 $sortOptions = $sortOptions ?? ['Highest Score','Lowest Score','Near My Score'];
 ?>
 <!DOCTYPE html>
