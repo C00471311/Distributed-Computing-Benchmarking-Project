@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/helpers.php';
+require_login();
 $submitCpus = bench_hardware_cpus();
 $submitGpus = bench_hardware_gpus();
 ?>
@@ -15,26 +16,10 @@ $submitGpus = bench_hardware_gpus();
 <body>
 <div class="page" id="page-submit">
   <?php render_header('submit-score'); ?>
-
+  <?php render_flash(); ?>
   <div class="content-wrap">
-    <!-- <div class="steps" style="margin-top:20px;">
-      <div class="step done">
-        <div class="step-num">✓</div>
-        <span>System Specs</span>
-      </div>
-      <div class="step-line"></div>
-      <div class="step active">
-        <div class="step-num">2</div>
-        <span>Benchmark Scores</span>
-      </div>
-      <div class="step-line"></div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <span>Review &amp; Submit</span>
-      </div>
-    </div> -->
-
     <form method="post" action="save-submission.php">
+      <input type="hidden" id="hidden_composite_score" name="composite_score" value="0">
       <div style="display:grid; grid-template-columns:1fr 320px; gap:24px;">
         <div>
           <div class="card" style="margin-bottom:16px;">
@@ -44,20 +29,12 @@ $submitGpus = bench_hardware_gpus();
               <div class="form-field">
                 <label for="submit_cpu">CPU</label>
                 <input type="text" id="submit_cpu" name="cpu" list="cpu_suggestions" required autocomplete="off" maxlength="160" placeholder="e.g. Intel Core i7-13700K">
-                <datalist id="cpu_suggestions">
-                  <?php foreach ($submitCpus as $cpu): ?>
-                    <option value="<?= e($cpu) ?>"></option>
-                  <?php endforeach; ?>
-                </datalist>
+                <datalist id="cpu_suggestions"><?php foreach ($submitCpus as $cpu): ?><option value="<?= e($cpu) ?>"></option><?php endforeach; ?></datalist>
               </div>
               <div class="form-field">
                 <label for="submit_gpu">GPU</label>
                 <input type="text" id="submit_gpu" name="gpu" list="gpu_suggestions" required autocomplete="off" maxlength="160" placeholder="e.g. NVIDIA GeForce RTX 4070">
-                <datalist id="gpu_suggestions">
-                  <?php foreach ($submitGpus as $gpu): ?>
-                    <option value="<?= e($gpu) ?>"></option>
-                  <?php endforeach; ?>
-                </datalist>
+                <datalist id="gpu_suggestions"><?php foreach ($submitGpus as $gpu): ?><option value="<?= e($gpu) ?>"></option><?php endforeach; ?></datalist>
               </div>
             </div>
           </div>
@@ -65,47 +42,16 @@ $submitGpus = bench_hardware_gpus();
           <div class="card" style="margin-bottom:16px;">
             <div class="card-title">Enter Benchmark Scores</div>
             <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Enter scores for benchmarks you’ve run.</p>
-
             <div class="benchmark-input-grid">
-              <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>Basemark</div>
-                <div class="form-field">
-                  <label for="score_basemark">Overall Score</label>
-                  <input id="score_basemark" name="basemark" type="number" placeholder="e.g. 8000" class="score-input" data-target="basemark">
+              <?php foreach (benchmark_labels() as $key => $label): ?>
+                <div class="benchmark-card">
+                  <div class="bname"><span class="dot"></span><?= e($label) ?></div>
+                  <div class="form-field">
+                    <label for="score_<?= e($key) ?>">Overall Score</label>
+                    <input id="score_<?= e($key) ?>" name="<?= e($key) ?>" type="number" min="0" placeholder="e.g. 8000" class="score-input" data-target="<?= e($key) ?>">
+                  </div>
                 </div>
-              </div>
-
-              <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>3DMark</div>
-                <div class="form-field">
-                  <label for="score_3dmark">Overall Score</label>
-                  <input id="score_3dmark" name="3dmark" type="number" placeholder="e.g. 12000" class="score-input" data-target="3dmark">
-                </div>
-              </div>
-
-              <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>Novabench</div>
-                <div class="form-field">
-                  <label for="score_novabench">Overall Score</label>
-                  <input id="score_novabench" name="novabench" type="number" placeholder="e.g. 4000" class="score-input" data-target="novabench">
-                </div>
-              </div>
-
-              <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>BAPco SYSmark</div>
-                <div class="form-field">
-                  <label for="score_sysmark">Overall Score</label>
-                  <input id="score_sysmark" name="sysmark" type="number" placeholder="e.g. 2500" class="score-input" data-target="sysmark">
-                </div>
-              </div>
-
-              <div class="benchmark-card">
-                <div class="bname"><span class="dot"></span>Passmark</div>
-                <div class="form-field">
-                  <label for="score_passmark">Overall Score</label>
-                  <input id="score_passmark" name="passmark" type="number" placeholder="e.g. 9000" class="score-input" data-target="passmark">
-                </div>
-              </div>
+              <?php endforeach; ?>
             </div>
           </div>
 
@@ -113,7 +59,7 @@ $submitGpus = bench_hardware_gpus();
             <div class="card-title">Optional — Submission Notes</div>
             <div class="form-field">
               <label for="submission_notes">How did you achieve this score? (Optional)</label>
-              <textarea id="submission_notes" name="submission_notes" rows="3" maxlength="500" placeholder="e.g. Liquid cooling, XMP enabled, GPU OC..."></textarea>
+              <textarea id="submission_notes" name="submission_notes" rows="3" maxlength="100" placeholder="e.g. Liquid cooling, XMP enabled, GPU OC..."></textarea>
             </div>
           </div>
         </div>
@@ -121,82 +67,54 @@ $submitGpus = bench_hardware_gpus();
         <div style="display:flex;flex-direction:column;gap:16px;">
           <div class="total-score-display">
             <div class="label">Composite score (preview)</div>
-            <div class="form-field" style="align-items:center;">
-              <label for="id_composite_score" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">Composite</label>
-              <input id="id_composite_score" type="number" placeholder="e.g. 68430" style="max-width:220px; text-align:center; font-family:'Courier Prime',monospace; font-size:28px; font-weight:700; padding:12px;">
-            </div>
-            <div class="sub">For display only until backend wiring is added.</div>
+            <div class="value" id="composite_preview">0</div>
+            <div class="sub">For display only until submit. Average of entered scores.</div>
           </div>
 
           <div class="card">
             <div class="card-title">Score Breakdown</div>
             <div style="display:flex;flex-direction:column;gap:12px;">
+              <?php foreach (benchmark_labels() as $key => $label): ?>
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>Basemark</span><span class="score-val" id="val-basemark" style="font-size:13px;">0</span>
-                </div>
-                <div class="score-bar-track"><div class="score-bar-fill" id="bar-basemark" style="width:0%"></div></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span><?= e($label) ?></span><span class="score-val" id="val-<?= e($key) ?>" style="font-size:13px;">0</span></div>
+                <div class="score-bar-track"><div class="score-bar-fill" id="bar-<?= e($key) ?>" style="width:0%"></div></div>
               </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>3DMark</span><span class="score-val" id="val-3dmark" style="font-size:13px;">0</span>
-                </div>
-                <div class="score-bar-track"><div class="score-bar-fill" id="bar-3dmark" style="width:0%"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>Novabench</span><span class="score-val" id="val-novabench" style="font-size:13px;">0</span>
-                </div>
-                <div class="score-bar-track"><div class="score-bar-fill" id="bar-novabench" style="width:0%"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>SYSmark</span><span class="score-val" id="val-sysmark" style="font-size:13px;">0</span>
-                </div>
-                <div class="score-bar-track"><div class="score-bar-fill" id="bar-sysmark" style="width:0%"></div></div>
-              </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
-                  <span>Passmark</span><span class="score-val" id="val-passmark" style="font-size:13px;">0</span>
-                </div>
-                <div class="score-bar-track"><div class="score-bar-fill" id="bar-passmark" style="width:0%"></div></div>
-              </div>
+              <?php endforeach; ?>
             </div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <button type="submit" class="btn btn-primary" style="padding:12px; width:100%; cursor:pointer; border:none; font:inherit;">
-              Submit score
-            </button>
-            <a href="leaderboard.php" class="btn btn-ghost" style="padding:12px; text-align:center; text-decoration:none;">
-              View leaderboard
-            </a>
-            <a href="dashboard.php" class="btn btn-ghost" style="padding:12px; text-align:center; text-decoration:none;">
-              ← Back to dashboard
-            </a>
+            <button type="submit" class="btn btn-primary" style="padding:12px; width:100%; cursor:pointer; border:none; font:inherit;">Submit score</button>
+            <a href="leaderboard.php" class="btn btn-ghost" style="padding:12px; text-align:center; text-decoration:none;">View leaderboard</a>
+            <a href="dashboard.php" class="btn btn-ghost" style="padding:12px; text-align:center; text-decoration:none;">← Back to dashboard</a>
           </div>
         </div>
       </div>
     </form>
   </div>
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const inputs = document.querySelectorAll('.score-input');
-  // Arbitrary max value for the progress bar visualization
-  const MAX_VAL = 15000;
-
-  inputs.forEach(input => {
-    input.addEventListener('input', (e) => {
-      const target = e.target.dataset.target;
-      const val = parseInt(e.target.value) || 0;
-      
+  const compositePreview = document.getElementById('composite_preview');
+  const hiddenComposite = document.getElementById('hidden_composite_score');
+  const MAX_VAL = 20000;
+  function recalc() {
+    let total = 0;
+    let count = 0;
+    inputs.forEach((input) => {
+      const target = input.dataset.target;
+      const val = parseInt(input.value, 10) || 0;
       document.getElementById(`val-${target}`).textContent = val.toLocaleString();
-      const percent = Math.min(Math.max((val / MAX_VAL) * 100, 0), 100);
-      document.getElementById(`bar-${target}`).style.width = percent + '%';
+      document.getElementById(`bar-${target}`).style.width = Math.min((val / MAX_VAL) * 100, 100) + '%';
+      if (val > 0) { total += val; count += 1; }
     });
-  });
+    const composite = count > 0 ? Math.round(total / count) : 0;
+    compositePreview.textContent = composite.toLocaleString();
+    hiddenComposite.value = composite;
+  }
+  inputs.forEach((input) => input.addEventListener('input', recalc));
+  recalc();
 });
 </script>
 </body>

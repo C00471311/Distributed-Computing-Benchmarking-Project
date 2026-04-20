@@ -513,3 +513,90 @@ tbody td.score-val {
 
 /* Standalone page override */
 body { min-height: 100vh; }
+
+/* Leaderboard detail dropdown */
+.view-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.view-btn:hover {
+  color: var(--text);
+}
+
+.detail-row {
+  display: none;
+  background: #faf9f6;
+}
+
+.detail-row.is-open {
+  display: table-row;
+}
+
+.detail-cell {
+  padding: 18px 20px !important;
+  background: #faf9f6;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
+}
+
+.detail-box {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.detail-box-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-family: 'Courier Prime', monospace;
+  margin-bottom: 12px;
+}
+
+.detail-benchmark-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-benchmark-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-benchmark-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.detail-note {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.detail-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+}

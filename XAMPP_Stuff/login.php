@@ -7,60 +7,22 @@
 <title>Benchmark Hub — Login / Sign Up</title>
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="benchmark-hub.css">
-
 </head>
 <body>
+<?php render_flash(); ?>
 <div class="page active" id="page-login">
   <div class="auth-page">
-
-    <!-- LEFT: Branding Panel -->
     <div class="auth-left">
       <div style="margin-bottom: 48px;">
         <h1 style="font-family:'Courier Prime',monospace; font-size:36px; font-weight:700; margin-top:16px; line-height:1.2;">BENCH<span style="color:#7aa3d4;">MARK</span><br>HUB</h1>
         <p style="margin-top:16px; font-size:15px; color:rgba(255,255,255,0.65); line-height:1.6;">The unified leaderboard for PC benchmark enthusiasts. Compare your scores across 5 industry-standard benchmarks.</p>
       </div>
-
       <div style="display:flex; flex-direction:column; gap:20px;">
-        <div style="display:flex; gap:16px; align-items:flex-start;">
-          <div style="width:32px;height:32px; border:1.5px solid rgba(255,255,255,0.3); border-radius:4px; display:flex;align-items:center;justify-content:center; flex-shrink:0; font-family:'Courier Prime',monospace; font-weight:700; color:rgba(255,255,255,0.6);">1</div>
-          <div>
-            <div style="font-weight:600; font-size:14px;">Run your benchmarks</div>
-            <div style="font-size:13px; color:rgba(255,255,255,0.5); margin-top:2px;">Use Cinebench, 3DMark, or any of our 5 supported tools</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:16px; align-items:flex-start;">
-          <div style="width:32px;height:32px; border:1.5px solid rgba(255,255,255,0.3); border-radius:4px; display:flex;align-items:center;justify-content:center; flex-shrink:0; font-family:'Courier Prime',monospace; font-weight:700; color:rgba(255,255,255,0.6);">2</div>
-          <div>
-            <div style="font-weight:600; font-size:14px;">Submit your scores</div>
-            <div style="font-size:13px; color:rgba(255,255,255,0.5); margin-top:2px;">Admin validates your run before it hits the leaderboard</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:16px; align-items:flex-start;">
-          <div style="width:32px;height:32px; border:1.5px solid rgba(255,255,255,0.3); border-radius:4px; display:flex;align-items:center;justify-content:center; flex-shrink:0; font-family:'Courier Prime',monospace; font-weight:700; color:rgba(255,255,255,0.6);">3</div>
-          <div>
-            <div style="font-weight:600; font-size:14px;">See where you rank</div>
-            <div style="font-size:13px; color:rgba(255,255,255,0.5); margin-top:2px;">Filter by CPU, GPU, or find users with your exact specs</div>
-          </div>
-        </div>
+        <div style="display:flex; gap:16px; align-items:flex-start;"><div style="width:32px;height:32px; border:1.5px solid rgba(255,255,255,0.3); border-radius:4px; display:flex;align-items:center;justify-content:center; flex-shrink:0; font-family:'Courier Prime',monospace; font-weight:700; color:rgba(255,255,255,0.6);">1</div><div><div style="font-weight:600; font-size:14px;">Run your benchmarks</div><div style="font-size:13px; color:rgba(255,255,255,0.5); margin-top:2px;">Use Cinebench, 3DMark, or any of our 5 supported tools</div></div></div>
+        <div style="display:flex; gap:16px; align-items:flex-start;"><div style="width:32px;height:32px; border:1.5px solid rgba(255,255,255,0.3); border-radius:4px; display:flex;align-items:center;justify-content:center; flex-shrink:0; font-family:'Courier Prime',monospace; font-weight:700; color:rgba(255,255,255,0.6);">2</div><div><div style="font-weight:600; font-size:14px;">Submit your scores</div><div style="font-size:13px; color:rgba(255,255,255,0.5); margin-top:2px;">Admin validates your run before it hits the leaderboard</div></div></div>
+        <div style="display:flex; gap:16px; align-items:flex-start;"><div style="width:32px;height:32px; border:1.5px solid rgba(255,255,255,0.3); border-radius:4px; display:flex;align-items:center;justify-content:center; flex-shrink:0; font-family:'Courier Prime',monospace; font-weight:700; color:rgba(255,255,255,0.6);">3</div><div><div style="font-weight:600; font-size:14px;">See where you rank</div><div style="font-size:13px; color:rgba(255,255,255,0.5); margin-top:2px;">Filter by CPU, GPU, or find users with your exact specs</div></div></div>
       </div>
-
-      <!-- <div style="margin-top:48px; display:flex; gap:40px;">
-        <div>
-          <div class="stat-big" style="color:white;">0</div>
-          <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px; font-family:'Courier Prime',monospace; text-transform:uppercase; letter-spacing:0.06em;">Submissions</div>
-        </div>
-        <div>
-          <div class="stat-big" style="color:white;">5</div>
-          <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px; font-family:'Courier Prime',monospace; text-transform:uppercase; letter-spacing:0.06em;">Benchmarks</div>
-        </div>
-        <div>
-          <div class="stat-big" style="color:white;">0</div>
-          <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:4px; font-family:'Courier Prime',monospace; text-transform:uppercase; letter-spacing:0.06em;">Users</div>
-        </div>
-      </div> -->
     </div>
-
-    <!-- RIGHT: Auth Form -->
     <div class="auth-right">
       <div class="auth-tabs" role="tablist" aria-label="Account">
         <button type="button" class="auth-tab active" role="tab" aria-selected="true" aria-controls="panel-signin" id="tab-signin" data-panel="signin">Sign In</button>
@@ -69,44 +31,18 @@
 
       <form id="panel-signin" class="auth-panel is-visible" role="tabpanel" aria-labelledby="tab-signin" method="post" action="authenticate.php">
         <h2 style="font-size:18px; font-weight:700; margin-bottom:4px;">Sign in</h2>
-
-        <div class="form-field">
-          <label for="id_username">Username</label>
-          <input id="id_username" name="username" type="text" autocomplete="username" placeholder="Username" class="placeholder-val">
-        </div>
-
-        <div class="form-field">
-          <label for="id_password">Password</label>
-          <input id="id_password" name="password" type="password" autocomplete="current-password" placeholder="Password">
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width:100%; padding:13px; font-size:15px; margin-top:4px; text-align:center; text-decoration:none; box-sizing:border-box;">Continue to dashboard →</button>
+        <div class="form-field"><label for="id_username">Username</label><input id="id_username" name="username" type="text" autocomplete="username" placeholder="Username" class="placeholder-val" required></div>
+        <div class="form-field"><label for="id_password">Password</label><input id="id_password" name="password" type="password" autocomplete="current-password" placeholder="Password" required></div>
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:13px; font-size:15px; margin-top:4px;">Continue to dashboard →</button>
       </form>
 
       <form id="panel-signup" class="auth-panel" role="tabpanel" aria-labelledby="tab-signup" hidden method="post" action="register.php">
         <h2 style="font-size:18px; font-weight:700; margin-bottom:4px;">Create account</h2>
-
-        <div class="form-field">
-          <label for="id_email">Email</label>
-          <input id="id_email" name="email" type="email" autocomplete="email" placeholder="you@example.com" class="placeholder-val">
-        </div>
-
-        <div class="form-field">
-          <label for="id_signup_username">Username</label>
-          <input id="id_signup_username" name="username" type="text" autocomplete="Username" placeholder="Username" class="placeholder-val">
-        </div>
-
-        <div class="form-field">
-          <label for="id_signup_password">Password</label>
-          <input id="id_signup_password" name="password" type="password" autocomplete="new-password" placeholder="Password">
-        </div>
-
-        <div class="form-field">
-          <label for="id_signup_password2">Confirm password</label>
-          <input id="id_signup_password2" name="password_confirm" type="password" autocomplete="new-password" placeholder="Confirm password">
-        </div>
-
-        <button type="submit" class="btn btn-primary" style="width:100%; padding:13px; font-size:15px; margin-top:4px; text-align:center; text-decoration:none; box-sizing:border-box;">Create account &amp; continue →</button>
+        <div class="form-field"><label for="id_email">Email</label><input id="id_email" name="email" type="email" autocomplete="email" placeholder="you@example.com" class="placeholder-val" required></div>
+        <div class="form-field"><label for="id_signup_username">Username</label><input id="id_signup_username" name="username" type="text" autocomplete="username" placeholder="Username" class="placeholder-val" required></div>
+        <div class="form-field"><label for="id_signup_password">Password</label><input id="id_signup_password" name="password" type="password" autocomplete="new-password" placeholder="Password" required></div>
+        <div class="form-field"><label for="id_signup_password2">Confirm password</label><input id="id_signup_password2" name="password_confirm" type="password" autocomplete="new-password" placeholder="Confirm password" required></div>
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:13px; font-size:15px; margin-top:4px;">Create account &amp; continue →</button>
       </form>
 
       <p style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:16px;"><a href="leaderboard.php" style="color:var(--blueprint);">Leaderboard</a> · <a href="admin.php" style="color:var(--blueprint);">Admin</a></p>
@@ -136,6 +72,6 @@
       </script>
     </div>
   </div>
-  </div>
+</div>
 </body>
 </html>
