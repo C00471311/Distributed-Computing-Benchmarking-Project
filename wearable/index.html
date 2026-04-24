@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wearable vitals</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --card: #1a222c;
+      --text: #e8eef4;
+      --muted: #8b9aad;
+      --accent: #3d9cf5;
+      --danger: #f55353;
+      --warn: #f5a623;
+      --ok: #3ecf8e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: radial-gradient(ellipse 120% 80% at 50% -20%, #1e3a5f 0%, var(--bg) 55%);
+      color: var(--text);
+      padding: 24px 16px 48px;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; }
+    h1 { font-size: 1.35rem; font-weight: 600; margin: 0 0 8px; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px 22px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .card h2 { font-size: 0.95rem; margin: 0 0 16px; color: var(--muted); font-weight: 600; }
+    label { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+    input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .btn-primary { background: linear-gradient(135deg, #2d7dd2, var(--accent)); color: #fff; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .alert {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      border: 1px solid rgba(245,83,83,0.45);
+      background: rgba(245,83,83,0.12);
+      color: #ffb4b4;
+    }
+    .alert.show { display: block; }
+    .alert.warn {
+      border-color: rgba(245,166,35,0.5);
+      background: rgba(245,166,35,0.12);
+      color: #ffe4a8;
+    }
+    .alert.ok {
+      border-color: rgba(62,207,142,0.45);
+      background: rgba(62,207,142,0.1);
+      color: #b8f5d4;
+    }
+    .alert.hint {
+      display: block;
+      border-color: rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.2);
+      color: var(--muted);
+    }
+
+    .watch-col { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .watch-wrap {
+      position: relative;
+      width: 200px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .watch {
+      width: 168px;
+      height: 198px;
+      border-radius: 42px;
+      background: linear-gradient(160deg, #2a3544 0%, #151b24 50%, #1e2630 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        0 20px 50px rgba(0,0,0,0.5),
+        0 0 0 3px #1a222c,
+        0 0 0 5px #3a4555;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      transition: transform 0.15s ease;
+    }
+    .watch.vibrate {
+      animation: vibrate 0.12s ease-in-out infinite;
+    }
+    @keyframes vibrate {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      20% { transform: translate(-2px, 1px) rotate(-0.8deg); }
+      40% { transform: translate(2px, -1px) rotate(0.8deg); }
+      60% { transform: translate(-1px, -2px) rotate(-0.5deg); }
+      80% { transform: translate(1px, 2px) rotate(0.5deg); }
+    }
+    .watch-face {
+      width: 100%;
+      flex: 1;
+      border-radius: 28px;
+      background: radial-gradient(circle at 40% 35%, #1c2430 0%, #0d1117 70%);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .watch-bpm { font-size: 1.75rem; font-weight: 700; color: var(--accent); }
+    .watch-bpm span { font-size: 0.65rem; font-weight: 500; color: var(--muted); }
+    .watch-bp { font-size: 0.95rem; color: var(--text); }
+    .watch-status {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .watch-status.ok { color: var(--ok); }
+    .watch-status.alert { color: var(--danger); }
+    .strap {
+      position: absolute;
+      width: 52px;
+      height: 100px;
+      background: linear-gradient(90deg, #252d38, #1a222c);
+      border-radius: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+    }
+    .strap.top { top: 0; height: 32px; border-radius: 8px 8px 0 0; }
+    .strap.bottom { bottom: 0; height: 32px; border-radius: 0 0 8px 8px; }
+    .legend {
+      display: none;
+      font-size: 0.8rem;
+      color: #ffc9c9;
+      text-align: center;
+      max-width: 240px;
+      line-height: 1.45;
+      margin: 0;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(245,83,83,0.15);
+      border: 1px solid rgba(245,83,83,0.35);
+    }
+    .legend.show { display: block; }
+    .status-pill {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(139,154,173,0.2);
+      color: var(--muted);
+    }
+    .status-pill.ok { background: rgba(62,207,142,0.2); color: var(--ok); }
+    .status-pill.bad { background: rgba(245,83,83,0.2); color: #ff8a8a; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Wearable vitals</h1>
+    <p class="sub">Enter your vitals</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Vitals</h2>
+        <div class="row2">
+          <div>
+            <label for="bp_sys">Blood pressure — systolic (mmHg)</label>
+            <input type="number" id="bp_sys" min="50" max="250" value="118" inputmode="numeric">
+          </div>
+          <div>
+            <label for="bp_dia">Blood pressure — diastolic (mmHg)</label>
+            <input type="number" id="bp_dia" min="30" max="150" value="76" inputmode="numeric">
+          </div>
+        </div>
+        <label for="hr">Heart rate (bpm)</label>
+        <input type="number" id="hr" min="30" max="220" value="72" inputmode="numeric">
+        <div class="row2">
+          <div>
+            <label for="age">Age</label>
+            <input type="number" id="age" min="1" max="120" value="34" inputmode="numeric">
+          </div>
+          <div>
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" min="1" max="300" step="0.1" value="70.5" inputmode="decimal">
+          </div>
+        </div>
+        <label for="gender">Gender</label>
+        <select id="gender">
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+          <option value="nonbinary">Non-binary</option>
+          <option value="unspecified" selected>Prefer not to say</option>
+        </select>
+
+        <button type="button" class="btn btn-primary" id="btn_check">Check</button>
+        <div class="alert" id="msg_alert" role="status"></div>
+      </div>
+
+      <div class="card watch-col">
+        <h2 style="align-self: stretch;">Wearable</h2>
+        <div class="watch-wrap">
+          <div class="strap top"></div>
+          <div class="watch" id="watch" aria-live="polite">
+            <div class="watch-face">
+              <div class="watch-bpm" id="watch_hr">— <span>bpm</span></div>
+              <div class="watch-bp" id="watch_bp">— / —</div>
+              <div class="watch-status" id="watch_status">Press Check</div>
+            </div>
+          </div>
+          <div class="strap bottom"></div>
+        </div>
+        <span class="status-pill" id="pill">—</span>
+        <p class="legend" id="legend_alert" role="alert"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      /** Fixed thresholds (Stage 2 hypertension–style cutoffs) */
+      var BP_SYS_MAX = 140;
+      var BP_DIA_MAX = 90;
+
+      var el = function (id) { return document.getElementById(id); };
+      var watch = el('watch');
+      var msg = el('msg_alert');
+      var legendAlert = el('legend_alert');
+      var pill = el('pill');
+      var watchHr = el('watch_hr');
+      var watchBp = el('watch_bp');
+      var watchStatus = el('watch_status');
+
+      var vibrateTimer = null;
+      var vibrateEndTimer = null;
+      var VIBRATE_MS = 10000;
+
+      function readVitals() {
+        return {
+          blood_pressure_systolic: Number(el('bp_sys').value) || 0,
+          blood_pressure_diastolic: Number(el('bp_dia').value) || 0,
+          heart_rate_bpm: Number(el('hr').value) || 0,
+          age: Number(el('age').value) || 0,
+          gender: el('gender').value,
+          weight_kg: Number(el('weight').value) || 0,
+        };
+      }
+
+      function stopVibrate() {
+        if (vibrateTimer) {
+          clearInterval(vibrateTimer);
+          vibrateTimer = null;
+        }
+        if (vibrateEndTimer) {
+          clearTimeout(vibrateEndTimer);
+          vibrateEndTimer = null;
+        }
+        if (navigator.vibrate) navigator.vibrate(0);
+      }
+
+      function stopVibrateAndShake() {
+        stopVibrate();
+        watch.classList.remove('vibrate');
+      }
+
+      function evaluate() {
+        var v = readVitals();
+        var sysEmpty = el('bp_sys').value.trim() === '';
+        var diaEmpty = el('bp_dia').value.trim() === '';
+        if (sysEmpty || diaEmpty) {
+          stopVibrateAndShake();
+          watchStatus.classList.remove('ok', 'alert');
+          watchStatus.textContent = 'Need BP values';
+          pill.textContent = '—';
+          pill.classList.remove('ok', 'bad');
+          msg.classList.remove('ok');
+          msg.classList.add('show', 'warn');
+          msg.textContent = 'Enter both systolic and diastolic blood pressure to compare with standard thresholds.';
+          legendAlert.classList.remove('show');
+          legendAlert.textContent = '';
+          var hrStr0 = el('hr').value.trim();
+          watchHr.innerHTML = (hrStr0 === '' ? '—' : String(Number(hrStr0))) + ' <span>bpm</span>';
+          watchBp.textContent = (sysEmpty ? '—' : String(v.blood_pressure_systolic)) + ' / ' + (diaEmpty ? '—' : String(v.blood_pressure_diastolic));
+          return;
+        }
+
+        var issues = [];
+
+        if (v.blood_pressure_systolic >= BP_SYS_MAX) {
+          issues.push('Systolic BP is at or above the standard threshold (≥ ' + BP_SYS_MAX + ' mmHg).');
+        }
+        if (v.blood_pressure_diastolic >= BP_DIA_MAX) {
+          issues.push('Diastolic BP is at or above the standard threshold (≥ ' + BP_DIA_MAX + ' mmHg).');
+        }
+
+        var hrStr = el('hr').value.trim();
+        watchHr.innerHTML = (hrStr === '' ? '—' : String(Number(hrStr))) + ' <span>bpm</span>';
+        watchBp.textContent =
+          (el('bp_sys').value.trim() === '' ? '—' : String(v.blood_pressure_systolic)) +
+          ' / ' +
+          (el('bp_dia').value.trim() === '' ? '—' : String(v.blood_pressure_diastolic));
+
+        var bad = issues.length > 0;
+        watch.classList.toggle('vibrate', bad);
+
+        watchStatus.classList.remove('ok', 'alert');
+        if (bad) {
+          watchStatus.textContent = 'BP elevated';
+          watchStatus.classList.add('alert');
+        } else {
+          watchStatus.textContent = 'BP within range';
+          watchStatus.classList.add('ok');
+        }
+
+        pill.textContent = bad ? 'Alert' : 'OK';
+        pill.classList.toggle('ok', !bad);
+        pill.classList.toggle('bad', bad);
+
+        msg.classList.remove('show', 'warn', 'ok');
+        if (bad) {
+          stopVibrate();
+          msg.classList.add('show');
+          msg.textContent = issues.join(' ');
+          legendAlert.textContent =
+            'Your BP looks high. Sit, breathe, and recheck in a few minutes. Get help if it stays up or you feel unwell.';
+          legendAlert.classList.add('show');
+          if (navigator.vibrate) {
+            navigator.vibrate([80, 40, 80, 40, 120]);
+            vibrateTimer = setInterval(function () {
+              navigator.vibrate(60);
+            }, 800);
+          }
+          vibrateEndTimer = setTimeout(function () {
+            vibrateEndTimer = null;
+            stopVibrateAndShake();
+          }, VIBRATE_MS);
+        } else {
+          msg.classList.add('show', 'ok');
+          msg.textContent = 'Blood pressure is below the Stage 2 thresholds (< ' + BP_SYS_MAX + '/' + BP_DIA_MAX + ' mmHg). Not medical advice.';
+          legendAlert.classList.remove('show');
+          legendAlert.textContent = '';
+          stopVibrateAndShake();
+        }
+      }
+
+      el('btn_check').addEventListener('click', function () {
+        evaluate();
+      });
+
+      /*
+      // POST to API (disabled for now). Re-enable when your endpoint and CORS are ready.
+      el('btn_send').addEventListener('click', async function () {
+        var url = (el('api_url').value || '').trim();
+        if (!url) {
+          msg.classList.remove('ok', 'warn');
+          msg.classList.add('show');
+          msg.textContent = 'Enter your API URL above to send vitals as JSON.';
+          return;
+        }
+        var body = readVitals();
+        el('btn_send').disabled = true;
+        try {
+          var res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+          var text = await res.text();
+          msg.classList.remove('ok', 'warn');
+          msg.classList.add('show', res.ok ? 'ok' : 'warn');
+          msg.textContent = res.status + ' — ' + (text || res.statusText);
+        } catch (e) {
+          msg.classList.remove('ok');
+          msg.classList.add('show', 'warn');
+          msg.textContent = 'Request failed: ' + (e && e.message ? e.message : String(e)) + ' (CORS or network.)';
+        }
+        el('btn_send').disabled = false;
+      });
+      */
+    })();
+  </script>
+</body>
+</html>

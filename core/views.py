@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
@@ -20,3 +21,11 @@ def submit_score(request: HttpRequest) -> HttpResponse:
 
 def leaderboard(request: HttpRequest) -> HttpResponse:
     return render(request, "leaderboard.html")
+
+
+def wearable_index(request: HttpRequest) -> HttpResponse:
+    path = settings.BASE_DIR / "wearable" / "index.html"
+    return HttpResponse(
+        path.read_text(encoding="utf-8"),
+        content_type="text/html; charset=utf-8",
+    )
