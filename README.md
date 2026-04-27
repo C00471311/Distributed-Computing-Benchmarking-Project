@@ -1,5 +1,9 @@
 # Benchmarking Application
 
+## Application setup
+
+Directions on how to setup and use the webapp is found in the README under the XAMPP_STUFF directory that contains all the necessary files.
+
 ## Rough Idea
 
 An application that focuses on compiling multiple popular benchmarking software from throughout the internet. For reference, a benchmark is a program that pushes the components of a computer to the maximum in order to test a component’s processing power.
