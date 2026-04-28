@@ -3,7 +3,7 @@ import sys
 import requests
 
 # REST API URL (replace with API Gateway URL)
-API_URL = "https://myURL.execute-api.us-west-2.amazonaws.com/prod"
+API_URL = "https://pv2o9bb53j.execute-api.us-east-2.amazonaws.com/prod/wearable"
 
 PAYLOAD = {
     "blood_pressure_systolic": 118,
