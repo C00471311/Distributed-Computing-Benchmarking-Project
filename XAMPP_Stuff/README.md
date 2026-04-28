@@ -29,7 +29,7 @@ C:\xampp\htdocs\ (Keep the files in a folder! Do not just paste the separate fil
 Go to http://localhost/phpmyadmin/
 
 1. At the top, go to the SQL tab
-2. Put in the SQL code from DB.sql (You can either drag and drop the file into the text box or you can just copy and paste the code from the file)
+2. Put in the SQL code from DB.sql (Copy and paste the code from the sql file in /config. Dragging the sql file in is broken for some reason so please just copy and paste it)
 3. Press Go at the bottom of the screen
 
 ---
