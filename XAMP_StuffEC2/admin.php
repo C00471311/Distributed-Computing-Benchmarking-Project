@@ -116,10 +116,6 @@ if ($selectedId > 0) {
             <button class="btn btn-ghost btn-sm" type="button">Export Queue CSV</button>
           </div>
         </div>
-
-        <div class="annotation-block" style="margin-top:12px;">Row highlighted yellow = flagged by auto-detection (score &gt;3σ from mean for that CPU/GPU combo).<br>
-          &quot;Approve&quot; → immediately publishes to leaderboard. &quot;Reject&quot; → opens modal with reason field (sent to user via notification).<br>
-          &quot;View&quot; → opens Score Detail slide-out panel for full review with screenshot upload.</div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:16px;">

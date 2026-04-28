@@ -2,7 +2,7 @@ import sys
 
 import requests
 
-# REST API URL (replace with API Gateway URL)
+# REST API URL (API Gateway URL)
 API_URL = "https://pv2o9bb53j.execute-api.us-east-2.amazonaws.com/prod/wearable"
 
 PAYLOAD = {
@@ -18,8 +18,6 @@ HEADERS = {"Content-Type": "application/json"}
 
 
 def main() -> int:
-    if "myURL" in API_URL:
-        print("Edit API_URL in submit_wearable.py to your real endpoint.", file=sys.stderr)
     try:
         response = requests.post(API_URL, headers=HEADERS, json=PAYLOAD, timeout=30)
     except requests.RequestException as exc:

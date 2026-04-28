@@ -68,7 +68,6 @@ $submitGpus = bench_hardware_gpus();
           <div class="total-score-display">
             <div class="label">Composite score (preview)</div>
             <div class="value" id="composite_preview">0</div>
-            <div class="sub">For display only until submit. Average of entered scores.</div>
           </div>
 
           <div class="card">
