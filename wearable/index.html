@@ -229,13 +229,16 @@
             <input type="number" id="weight" min="1" max="300" step="0.1" value="70.5" inputmode="decimal">
           </div>
         </div>
-        <label for="gender">Gender</label>
-        <select id="gender">
-          <option value="female">Female</option>
-          <option value="male">Male</option>
-          <option value="nonbinary">Non-binary</option>
-          <option value="unspecified" selected>Prefer not to say</option>
-        </select>
+        <div class="row2">
+  	  <div>
+    	    <label for="height">Height (inches)</label>
+    	    <input type="number" id="height" min="1" max="108" value="70" inputmode="numeric">
+  	  </div>
+  	  <div>
+    	   <label for="temperature">Temperature (°F)</label>
+    	   <input type="number" id="temperature" min="90" max="110" step="0.1" value="98.6" inputmode="decimal">
+  	  </div>
+	</div>
 
         <button type="button" class="btn btn-primary" id="btn_check">Check</button>
         <div class="alert" id="msg_alert" role="status"></div>
@@ -285,8 +288,9 @@
           blood_pressure_diastolic: Number(el('bp_dia').value) || 0,
           heart_rate_bpm: Number(el('hr').value) || 0,
           age: Number(el('age').value) || 0,
-          gender: el('gender').value,
           weight_kg: Number(el('weight').value) || 0,
+	  height: Number(el('height').value) || 0,
+	  temperature: Number(el('temperature').value) || 0,
         };
       }
 
@@ -387,24 +391,25 @@
         }
       }
 
-      el('btn_check').addEventListener('click', function () {
+      el('btn_check').addEventListener('click', async function () {
         evaluate();
-      });
 
-      /*
-      // POST to API (disabled for now). Re-enable when your endpoint and CORS are ready.
-      el('btn_send').addEventListener('click', async function () {
-        var url = (el('api_url').value || '').trim();
-        if (!url) {
-          msg.classList.remove('ok', 'warn');
-          msg.classList.add('show');
-          msg.textContent = 'Enter your API URL above to send vitals as JSON.';
-          return;
-        }
-        var body = readVitals();
-        el('btn_send').disabled = true;
+        var rawData = readVitals();
+
+	var body = {
+    	          age: rawData.age,
+    	    height: rawData.height,
+    	    weight: Math.round(rawData.weight_kg * 2.20462),
+    	    heart_rate: rawData.heart_rate_bpm,
+    	    systolic: rawData.blood_pressure_systolic,
+   	    diastolic: rawData.blood_pressure_diastolic,
+    	    temperature: rawData.temperature
+  	};
+
         try {
-          var res = await fetch(url, {
+
+	  var url = "https://x0lnwxh9ll.execute-api.us-east-2.amazonaws.com/wearables";
+          var res = await fetch(url,  {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
@@ -418,9 +423,7 @@
           msg.classList.add('show', 'warn');
           msg.textContent = 'Request failed: ' + (e && e.message ? e.message : String(e)) + ' (CORS or network.)';
         }
-        el('btn_send').disabled = false;
       });
-      */
     })();
   </script>
 </body>
